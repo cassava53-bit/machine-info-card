@@ -1,52 +1,117 @@
-<script>
-// 1. 取得 URL 參數的函數
-function getQueryParam(param) {
-  const urlParams = new URLSearchParams(window.location.search);
-  return urlParams.get(param) || '資料遺失';
-}
-
-// 2. 獲取四個機台資料點 (c, m, s, d)
-const company = getQueryParam('c'); 
-const model = getQueryParam('m');
-const serial = getQueryParam('s');
-const installDate = getQueryParam('d');
-
-// 3. Google Forms 基礎網址與 ID 
-// ⭐ 務必將這裡替換為您從 Google Forms 傳送頁面複製的完整 viewform 網址 ⭐
-const formBaseUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdKjRdE4jwRbDrZOWQnNLJOp4GfKOBB3-krJ8XPzhr3UIwLFg/viewform"; // <--- 請替換成您的正確網址！
-
-const formLink = formBaseUrl + 
-  "?usp=pp_url" + 
-  "&entry.776355966=" + encodeURIComponent(company) +       
-  "&entry.1488878852=" + encodeURIComponent(model) +         
-  "&entry.1626734834=" + encodeURIComponent(serial) +        
-  "&entry.212470479=" + encodeURIComponent(installDate);     
-
-
-// 4. 動態顯示資料
-document.write(`
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>機台資訊查詢</title>
+  
   <style>
-    .info-card {
-      padding: 20px; border: 1px solid #ddd; border-radius: 8px;
-      max-width: 400px; margin: 20px auto;
+    /* 全局樣式：設置字體和背景 */
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #f4f7f6; /* 淺灰色背景 */
+      display: flex;
+      justify-content: center; /* 水平置中 */
+      align-items: center; /* 垂直置中 */
+      min-height: 100vh; /* 確保佔滿整個視窗高度 */
+      margin: 0;
+      padding: 20px;
     }
-    .info-item { margin-bottom: 10px; font-size: 16px; text-align: left; }
-    .info-item b { display: inline-block; width: 100px; color: #333; }
+
+    /* 資訊卡容器樣式 */
+    .info-card {
+      background-color: #ffffff; /* 白色背景 */
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* 柔和陰影 */
+      max-width: 450px;
+      width: 100%;
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+    .info-card:hover {
+      transform: translateY(-2px); /* 輕微上浮效果 */
+    }
+
+    /* 標題和項目樣式 */
+    h2 {
+      color: #333;
+      border-bottom: 2px solid #007bff; /* 藍色底線 */
+      padding-bottom: 10px;
+      margin-top: 0;
+      margin-bottom: 25px;
+    }
+    .info-item {
+      margin-bottom: 15px;
+      font-size: 17px;
+      text-align: left;
+      line-height: 1.5;
+    }
+    .info-item b {
+      display: inline-block;
+      width: 120px; /* 標籤固定寬度 */
+      color: #555;
+      font-weight: 600;
+    }
+
+    /* 按鈕樣式 */
     .report-button {
-      display: inline-block; background-color: #4285F4; color: white;
-      padding: 12px 25px; text-decoration: none; border-radius: 5px;
-      margin-top: 20px; font-size: 18px; font-weight: bold;
+      display: inline-block;
+      background-color: #007bff; /* 鮮豔的藍色 */
+      color: white;
+      padding: 12px 25px;
+      text-decoration: none;
+      border-radius: 8px;
+      margin-top: 25px;
+      font-size: 18px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+    .report-button:hover {
+      background-color: #0056b3;
     }
   </style>
+</head>
+<body>
 
-  <div class="info-card">
-    <h2>✅ 機台基本資料</h2>
-    <div class="info-item"><b>公司名稱:</b> ${company}</div>
-    <div class="info-item"><b>機台型號:</b> ${model}</div>
-    <div class="info-item"><b>Serial NO.:</b> ${serial}</div>
-    <div class="info-item"><b>安裝日期:</b> ${installDate}</div>
-    
-    <a href="${formLink}" class="report-button">點選進入報修表單</a>
-  </div>
-`);
+<script>
+  // 1. 取得 URL 參數的函數
+  function getQueryParam(param) {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(param) || '資料遺失';
+  }
+
+  // 2. 獲取四個機台資料點 (c, m, s, d)
+  const company = getQueryParam('c'); 
+  const model = getQueryParam('m');
+  const serial = getQueryParam('s');
+  const installDate = getQueryParam('d');
+
+  // 3. Google Forms 基礎網址與 ID 
+  // ⚠️ 替換成您最新、最正確的報修表單（副本）網址
+  const formBaseUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdKjRdE4jwRbDrZOWQnNLJOp4GfKOBB3-krJ8XPzhr3UIwLFg/viewform"; 
+
+  const formLink = formBaseUrl + 
+    "?usp=pp_url" + 
+    "&entry.776355966=" + encodeURIComponent(company) +       
+    "&entry.1488878852=" + encodeURIComponent(model) +         
+    "&entry.1626734834=" + encodeURIComponent(serial) +        
+    "&entry.212470479=" + encodeURIComponent(installDate);     
+
+
+  // 4. 動態顯示資料
+  document.write(`
+    <div class="info-card">
+      <h2>✅ 機台基本資料</h2>
+      <div class="info-item"><b>公司名稱:</b> ${company}</div>
+      <div class="info-item"><b>機台型號:</b> ${model}</div>
+      <div class="info-item"><b>Serial NO.:</b> ${serial}</div>
+      <div class="info-item"><b>安裝日期:</b> ${installDate}</div>
+      
+      <a href="${formLink}" class="report-button">點選進入報修表單</a>
+    </div>
+  `);
 </script>
+
+</body>
+</html>
