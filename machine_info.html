@@ -1,0 +1,52 @@
+<script>
+// 1. 取得 URL 參數的函數
+function getQueryParam(param) {
+  const urlParams = new URLSearchParams(window.location.search);
+  return urlParams.get(param) || '資料遺失';
+}
+
+// 2. 獲取四個機台資料點 (c, m, s, d)
+const company = getQueryParam('c'); 
+const model = getQueryParam('m');
+const serial = getQueryParam('s');
+const installDate = getQueryParam('d');
+
+// 3. Google Forms 基礎網址與 ID 
+// ⭐ 務必將這裡替換為您從 Google Forms 傳送頁面複製的完整 viewform 網址 ⭐
+const formBaseUrl = "https://docs.google.com/forms/d/e/1FAIpQLSc60kRhohIM2RcqHjnlTEXW61pnlRWSDHrflZ1U1aOC712J1A/viewform"; // <--- 請替換成您的正確網址！
+
+const formLink = formBaseUrl + 
+  "?usp=pp_url" + 
+  "&entry.776355966=" + encodeURIComponent(company) +       
+  "&entry.1488878852=" + encodeURIComponent(model) +         
+  "&entry.1626734834=" + encodeURIComponent(serial) +        
+  "&entry.212470479=" + encodeURIComponent(installDate);     
+
+
+// 4. 動態顯示資料
+document.write(`
+  <style>
+    .info-card {
+      padding: 20px; border: 1px solid #ddd; border-radius: 8px;
+      max-width: 400px; margin: 20px auto;
+    }
+    .info-item { margin-bottom: 10px; font-size: 16px; text-align: left; }
+    .info-item b { display: inline-block; width: 100px; color: #333; }
+    .report-button {
+      display: inline-block; background-color: #4285F4; color: white;
+      padding: 12px 25px; text-decoration: none; border-radius: 5px;
+      margin-top: 20px; font-size: 18px; font-weight: bold;
+    }
+  </style>
+
+  <div class="info-card">
+    <h2>✅ 機台基本資料</h2>
+    <div class="info-item"><b>公司名稱:</b> ${company}</div>
+    <div class="info-item"><b>機台型號:</b> ${model}</div>
+    <div class="info-item"><b>Serial NO.:</b> ${serial}</div>
+    <div class="info-item"><b>安裝日期:</b> ${installDate}</div>
+    
+    <a href="${formLink}" class="report-button">點選進入報修表單</a>
+  </div>
+`);
+</script>
